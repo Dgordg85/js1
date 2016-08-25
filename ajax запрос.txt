@@ -1,0 +1,30 @@
+// добавление записи в базу
+function insert() {
+	var http = new XMLHttpRequest();
+
+	var region = document.getElementById('region').value;
+	var name = document.getElementById('name').value;
+	var dateout = document.getElementById('dateout').value;
+
+	if (region !== "" && name !== "" && dateout !== "") {
+		document.getElementById('insert_response').innerHTML = "Добавляю..."
+
+		http.onreadystatechange=function(){
+	  		if (http.readyState==4 && http.status==200 )
+	    	document.getElementById('insert_response').innerHTML = 'Добавлено!';
+	   	}
+
+	   	http.open('GET', 'insert.php?region='+region+'&name='+name+'&dateout='+dateout+'&x='+Math.random(), true);
+		http.send();
+		document.getElementById('region').value = '';
+		document.getElementById('name').value = '';
+		document.getElementById('datein').value = '';
+		document.getElementById('dateout').focus();
+
+	}
+	setTimeout(closeDiv, 5000);
+}
+
+function closeDiv() {
+	document.getElementById('insert_response').innerHTML = '';
+}

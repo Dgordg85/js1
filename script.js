@@ -1,81 +1,105 @@
 'use strict';
+
 //Задание 1
 
-function min(numberOne, numberTwo){
-	if (numberOne > numberTwo) {
-		numberOne = numberTwo;
-	}
-	return numberOne;
+function color16(first, second, third) {
+
+	first = first || 0;
+	second = second || first;
+	third = third || second;
+
+	var str = '#';
+
+	if (!checkColor(first) || !checkColor(second) || !checkColor(third)) return console.log('Ошибка');
+
+	function checkColor(color) {
+			//Проверка на число, и что не строка вида '255'
+			if (typeof(color) !== 'string' && !isNaN(parseFloat(color)) && isFinite(color)) {
+				//Проверка на диапазон 0..255
+				if (color < 0 || color > 255) return false;
+			} else return false;
+			// преобразуем в 16-ную систему и делаем большие символы, добавляем к строке
+			str += color.toString(16).toUpperCase();
+			return str;
+		}
+	return console.log(str);
 }
 
+color16(255, 232, 30);
 
+//Задание 2
 
-console.log(min(0, 10));
-console.log(min(0, -10));
+function numberToObject(number){
+	//Проверка на число, и что не строка вида '999'
 
+	var object = {};
 
-
-//Задание 2.1
-
-function countBs(str) {
-	str = str.toLowerCase();
-	var count = 0;
-
-	for (var i = 0; i < str.length; i++) {
-		if (str.charAt(i) == 'в') count++;
+	var isNumberTrueNumberOrFalse = (typeof(number) !== 'string' && !isNaN(parseFloat(number)) && isFinite(number))
+	if (isNumberTrueNumberOrFalse === false) {
+		return console.log('Не число!');
 	}
+		//Проверка на диапазон 0..999
+	if (number < 0) return console.log('Число меньше 0');
 
-	return console.log(count);
+	if (number > 999) return console.log('Число больше 999 ' + {});
+
+	(function(){
+		switch (String(number).length) {
+			case 3:
+				object['\'сотни\''] = String(number).charAt(2);
+			case 2:
+				object['\'десятки\''] = String(number).charAt(1);
+			case 1:
+				object['\'единицы\''] = String(number).charAt(0);
+		}
+		return
+	})()
+	return object;
 }
 
-countBs('Выпили закусили в');
-
-//Задание 2.2
-
-function countChar(str, symbol) {
-	str = str.toLowerCase();
-	symbol = symbol.toLowerCase();
-
-	symbol = symbol || 'в';
-	var count = 0;
-
-	for (var i = 0; i < str.length; i++) {
-		if (str.charAt(i) == symbol) count++;
-	}
-
-	return console.log('Количество символов ' + symbol + '=' + count);
-}
-
-countChar('Выпили закусили в','В');
+console.log(numberToObject(257));
 
 //Задание 3
 
-function evenOdd(number) {
-	switch (number) {
-		case 0:
-			return console.log('Четное');
-		case 1:
-			return console.log('Нечетное');
-		default:
-			(number > 0) ? evenOdd(number - 2) : evenOdd(number + 2);
-			break;
-	}
+var object = numberToObject(257);
+
+function objectToQueryString(object){
+	var str = "";
+
+	(function(){
+		for (var i in object) {
+			str +='&amp;' + i + '=' + object[i];
+		}
+		str = str.substring(5);
+		return
+	})()
+	return console.log(str);
 }
 
-evenOdd(50);
-evenOdd(75);
-
-/* Вызывает переполнение стека вызовов, поэтому если отрицательно нужно прибавлять.*/
-evenOdd(-1);
-
-evenOdd(-50);
+objectToQueryString(object);
 
 //Задание 4
-(function(w) {
-	'use strict';
-	var arr = [];
-	w.containerPush = function(elem) {
-		arr.push(elem);
-		return arr.slice(); // Почему просто arr нельзя? Зачем arr.slice???
-	}
-})(window)
+
+function extend(object) {
+	var copyObject = {};
+	(function(){
+		for (var i in object) {
+			copyObject[i] = object[i];
+		}
+		return
+	})()
+	return copyObject;
+}
+
+
+var copyObject = {};
+
+var numberObject = numberToObject(355);
+
+copyObject = extend(numberObject);
+
+copyObject['id'] = 577;
+
+console.log(copyObject);
+console.log(numberObject);
+
