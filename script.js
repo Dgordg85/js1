@@ -1,6 +1,7 @@
 'use strict';
 
 //Задание 1
+console.log('Задание 1');
 
 function color16(first, second, third) {
 
@@ -28,6 +29,7 @@ function color16(first, second, third) {
 color16(255, 232, 30);
 
 //Задание 2
+console.log('Задание 2');
 
 function numberToObject(number){
 	//Проверка на число, и что не строка вида '999'
@@ -60,6 +62,7 @@ function numberToObject(number){
 console.log(numberToObject(257));
 
 //Задание 3
+console.log('Задание 3');
 
 var object = numberToObject(257);
 
@@ -79,6 +82,7 @@ function objectToQueryString(object){
 objectToQueryString(object);
 
 //Задание 4
+console.log('Задание 4');
 
 function extend(object) {
 	var copyObject = {};
