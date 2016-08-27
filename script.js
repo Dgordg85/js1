@@ -20,13 +20,13 @@ function color16(first, second, third) {
 				if (color < 0 || color > 255) return false;
 			} else return false;
 			// преобразуем в 16-ную систему и делаем большие символы, добавляем к строке
-			str += color.toString(16).toUpperCase();
+			str += ('0' + color.toString(16).toUpperCase()).substr(-2);
 			return str;
 		}
 	return console.log(str);
 }
 
-color16(255, 232, 30);
+color16(255, 5, 30);
 
 //Задание 2
 console.log('Задание 2');
@@ -106,4 +106,3 @@ copyObject['id'] = 577;
 
 console.log(copyObject);
 console.log(numberObject);
-
