@@ -1,108 +1,124 @@
-'use strict';
+"use strict;"
 
 //Задание 1
 console.log('Задание 1');
 
-function color16(first, second, third) {
+function arrayToList(arr){
+	var list = {};
 
-	first = first || 0;
-	second = second || first;
-	third = third || second;
-
-	var str = '#';
-
-	if (!checkColor(first) || !checkColor(second) || !checkColor(third)) return console.log('Ошибка');
-
-	function checkColor(color) {
-			//Проверка на число, и что не строка вида '255'
-			if (typeof(color) !== 'string' && !isNaN(parseFloat(color)) && isFinite(color)) {
-				//Проверка на диапазон 0..255
-				if (color < 0 || color > 255) return false;
-			} else return false;
-			// преобразуем в 16-ную систему и делаем большие символы, добавляем к строке
-			str += ('0' + color.toString(16).toUpperCase()).substr(-2);
-			return str;
-		}
-	return console.log(str);
+	for (var i = arr.length - 1; i >= 0; i--) {
+		list = prepend(arr[i], list);
+	}
+	return list;	
 }
 
-color16(255, 5, 30);
+function listToArray(list){
+	var i = 0;
+	var arr = [];
+	var elem = nth(list, i);
+
+	while (elem !== undefined) {
+		arr.push(elem);
+		i++;
+		elem = nth(list, i);
+	}
+return arr;
+}
+
+function prepend(elem, object){
+	var rest = {};
+	object = object || {};
+	rest.value = elem;
+	rest.rest = (object.rest === undefined) ? null : object;
+return rest;
+}
+
+function nth(list, position){
+	if (position < 0) {
+		return undefined;
+	}
+
+	var i = -1;
+
+	while (i < position) {
+
+		if (list === null) {
+			return  undefined;
+		}
+
+		var result = list.value;
+		list = list.rest;
+		i++;
+	}
+return result;
+}
+
+function objToStr(obj){
+	var newobj = {};
+	Object.assign(newobj, obj);
+	newobj.toString = function() {
+		return JSON.stringify(this);
+		}
+	return '' + newobj;
+}
+
+console.log(objToStr(arrayToList([10, 20])));
+// → {value: 10, rest: {value: 20, rest: null}}
+console.log(listToArray({value: 10, rest: {value: 20, rest: {value: 30, rest: null}}}));
+// → [10, 20, 30]
+console.log(objToStr(prepend(10, prepend(20, null))));
+// → {value: 10, rest: {value: 20, rest: null}}
+console.log(nth(arrayToList([10, 20, 30]), 1));
+// → 20
 
 //Задание 2
 console.log('Задание 2');
 
-function numberToObject(number){
-	//Проверка на число, и что не строка вида '999'
 
-	var object = {};
-
-	var isNumberTrueNumberOrFalse = (typeof(number) !== 'string' && !isNaN(parseFloat(number)) && isFinite(number))
-	if (isNumberTrueNumberOrFalse === false) {
-		return console.log('Не число!');
+function reverseArray(arr) {
+	var newArr = [];
+	for (var i = arr.length - 1; i >= 0; i--) {
+		newArr.push(arr[i]);
 	}
-		//Проверка на диапазон 0..999
-	if (number < 0) return console.log('Число меньше 0');
-
-	if (number > 999) return console.log('Число больше 999 ' + {});
-
-	(function(){
-		switch (String(number).length) {
-			case 3:
-				object['\'сотни\''] = String(number).charAt(2);
-			case 2:
-				object['\'десятки\''] = String(number).charAt(1);
-			case 1:
-				object['\'единицы\''] = String(number).charAt(0);
-		}
-		return
-	})()
-	return object;
+return newArr;
 }
 
-console.log(numberToObject(257));
+var arr = [10, 20, 30, 40];
+var arr2 = reverseArray(arr);
+console.log(arr);
+console.log(arr2);
+
+function reverseArrayInPlace(arr) {
+	arr = reverseArray(arr)
+return arr;
+}
+
+arr = reverseArrayInPlace(arr);
+console.log(arr);
 
 //Задание 3
 console.log('Задание 3');
 
-var object = numberToObject(257);
+function pick(obj, keys) {
 
-function objectToQueryString(object){
-	var str = "";
-
-	(function(){
-		for (var i in object) {
-			str +='&amp;' + i + '=' + object[i];
+	for(var key in obj) {
+		if (key in keys) alert('1');
+	
+		if (key in keys) {
+			
+			delete obj[key];
 		}
-		str = str.substring(5);
-		return
-	})()
-	return console.log(str);
+	}
+return obj;
 }
 
-objectToQueryString(object);
-
-//Задание 4
-console.log('Задание 4');
-
-function extend(object) {
-	var copyObject = {};
-	(function(){
-		for (var i in object) {
-			copyObject[i] = object[i];
-		}
-		return
-	})()
-	return copyObject;
+var user = {
+    name: 'Sergey',
+    age: 30,
+    email: 'sergey@gmail.com',
+    friends: ['Sveta', 'Artem']
 }
 
+var keys = ['name', 'age'];
 
-var copyObject = {};
-
-var numberObject = numberToObject(355);
-
-copyObject = extend(numberObject);
-
-copyObject['id'] = 577;
-
-console.log(copyObject);
-console.log(numberObject);
+console.log(objToStr(pick(user,keys)));
