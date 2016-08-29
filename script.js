@@ -4,7 +4,7 @@
 console.log('Задание 1');
 
 function arrayToList(arr){
-	var list = {};
+	var list = null;
 
 	for (var i = arr.length - 1; i >= 0; i--) {
 		list = prepend(arr[i], list);
@@ -29,7 +29,7 @@ function prepend(elem, object){
 	var rest = {};
 	object = object || {};
 	rest.value = elem;
-	rest.rest = (object.rest === undefined) ? null : object;
+	rest.rest = object;
 return rest;
 }
 
