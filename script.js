@@ -74,7 +74,7 @@ console.log(nth(arrayToList([10, 20, 30]), 1));
 //Задание 2
 console.log('Задание 2');
 
-
+// С конца добавляем элементы в новый массив
 function reverseArray(arr) {
 	var newArr = [];
 	for (var i = arr.length - 1; i >= 0; i--) {
@@ -83,13 +83,25 @@ function reverseArray(arr) {
 return newArr;
 }
 
-var arr = [10, 20, 30, 40];
+var arr = [10, 20, 30, 40, 50];
 var arr2 = reverseArray(arr);
 console.log(arr);
 console.log(arr2);
 
-function reverseArrayInPlace(arr) {
-	arr = reverseArray(arr)
+// Работаем до середины и меняем элементы друг с другом.
+function reverseArrayInPlace(arr){
+	
+	var arrMiddle = Math.ceil(arr.length / 2) - 1;
+	var idLastElem = arr.length - 1;
+
+	for (var i = 0; i <= arrMiddle; i++) {
+		var tempElem = arr[i];
+		
+		//Меняем элементы местами
+		arr[i] = arr[idLastElem - i];
+		arr[idLastElem - i] = tempElem;
+	}
+
 return arr;
 }
 
@@ -100,14 +112,10 @@ console.log(arr);
 console.log('Задание 3');
 
 function pick(obj, keys) {
-
+	// пробегаемся по объекту
 	for(var key in obj) {
-		if (key in keys) alert('1');
-	
-		if (key in keys) {
-			
-			delete obj[key];
-		}
+		var indexOfKey = keys.indexOf(key);
+		if (indexOfKey != -1) delete obj[keys[indexOfKey]];
 	}
 return obj;
 }
@@ -119,6 +127,6 @@ var user = {
     friends: ['Sveta', 'Artem']
 }
 
-var keys = ['name', 'age'];
+var keys = ['name', 'friends', 'address'];
 
 console.log(objToStr(pick(user,keys)));
