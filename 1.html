@@ -3,11 +3,159 @@
 <head>
 	<title>JS</title>
     <meta charset="utf-8">
+    <style type="text/css">
+    	div {
+    		text-align: center;
+    		vertical-align: center;
+    		line-height: 30px;
+    		font-family: "Verdana",Georgia,Serif;
+    	}
+    	#desk { 
+    		width: 240px; 
+    		height: 240px; 
+    		border: 15px solid #762e06;
+    		border-radius: 7px;
+    	}
+    	.cell {
+    		width: 30px; 
+    		height: 30px;
+    		float: left;
+    		position: relative;
+    	}
+    	.blackCell {
+    		background-color: #c35519;
+    	}
+    	.whiteCell {
+    		background-color: #fceccb;
+    	}
+
+    	.blackFigures {
+    		color: black;
+    		font-weight: bold;
+    	}
+
+    	.whiteFigures {
+    		color: #cbafce;
+    		font-weight: bold;
+    	}
+
+        .symbol {
+            position: absolute;
+            line-height: 0px;
+            color: white;
+            font-size: 9px;
+            font-family: "Verdana",Georgia,Serif;
+            font-weight: normal;
+        }
+
+    	.numbers-left {
+    		top: 15px;
+    		left: -10px;
+        }
+
+        .numbers-right {
+            top: 15px;
+            right: -10px;
+            transform: rotate(180deg);
+        }
+    	
+        .letters-up {
+            left: 12px;
+            top: -7px;
+            transform: rotate(180deg);
+            font-size: 8px;
+        }
+
+        .letters-down {
+           left: 12px;
+           bottom: -7px;
+           font-size: 8px;
+        }
+
+        .pawns:after {
+            content: 'П';
+        }
+
+        .rook:after {
+            content: 'Л';
+        }
+
+        .king:after, .knight:after {
+            content: 'К';
+        }
+
+        .bishop:after {
+            content: 'C';
+        }
+
+        .queen:after {
+            content: 'Ф';
+        }
+
+       .pawns, .rook, .king, .bishop, .queen, .knight {
+          width: 30px;
+          height: 30px;
+          background: url(chess.png) no-repeat;
+        }
+
+       .pawns:after, .rook:after, .king:after, .bishop:after, .queen:after, .knight:after {
+            content: '';
+        }
+
+        .blackFigures.pawns {
+          background-position: -248px -4px;
+        }
+
+        .whiteFigures.pawns {
+          background-position: -248px -47px;
+        }
+
+        .blackFigures.rook {
+          background-position: -97px -4px;
+        }
+
+        .whiteFigures.rook {
+          background-position: -97px -47px;
+        }
+
+        .blackFigures.king {
+          background-position: 3px -4px;
+        }
+
+        .whiteFigures.king {
+          background-position: 3px -47px;
+        }
+
+        .blackFigures.queen {
+          background-position: -47px -4px;
+        }
+
+        .whiteFigures.queen {
+          background-position: -47px -47px;
+        }
+
+        .blackFigures.bishop {
+          background-position: -147px -4px;
+        }
+
+        .whiteFigures.bishop {
+          background-position: -147px -47px;
+        }
+
+         .blackFigures.knight {
+          background-position: -199px -4px;
+        }
+
+        .whiteFigures.knight {
+          background-position: -199px -47px;
+        }
+
+
+
+
+    </style>
+    
 </head>
 <body>
-<script src="script.js">
-</script>
-
-
-
+<script src="script.js"></script>
 </html>

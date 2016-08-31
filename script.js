@@ -1,132 +1,105 @@
 "use strict;"
 
-//Задание 1
-console.log('Задание 1');
+function generateDesk(){
 
-function arrayToList(arr){
-	var list = null;
+	var divDesk = document.createElement('div');
+	divDesk.setAttribute('id', "desk");
+	var parentElem = document.body;
+	parentElem.insertBefore(divDesk, parentElem.children[0]);
 
-	for (var i = arr.length - 1; i >= 0; i--) {
-		list = prepend(arr[i], list);
-	}
-	return list;	
-}
-
-function listToArray(list){
-	var i = 0;
-	var arr = [];
-	var elem = nth(list, i);
-
-	while (elem !== undefined) {
-		arr.push(elem);
-		i++;
-		elem = nth(list, i);
-	}
-return arr;
-}
-
-function prepend(elem, object){
-	var rest = {};
-	object = object || {};
-	rest.value = elem;
-	rest.rest = object;
-return rest;
-}
-
-function nth(list, position){
-	if (position < 0) {
-		return undefined;
-	}
-
-	var i = -1;
-
-	while (i < position) {
-
-		if (list === null) {
-			return  undefined;
-		}
-
-		var result = list.value;
-		list = list.rest;
-		i++;
-	}
-return result;
-}
-
-function objToStr(obj){
-	var newobj = {};
-	Object.assign(newobj, obj);
-	newobj.toString = function() {
-		return JSON.stringify(this);
-		}
-	return '' + newobj;
-}
-
-console.log(objToStr(arrayToList([10, 20])));
-// → {value: 10, rest: {value: 20, rest: null}}
-console.log(listToArray({value: 10, rest: {value: 20, rest: {value: 30, rest: null}}}));
-// → [10, 20, 30]
-console.log(objToStr(prepend(10, prepend(20, null))));
-// → {value: 10, rest: {value: 20, rest: null}}
-console.log(nth(arrayToList([10, 20, 30]), 1));
-// → 20
-
-//Задание 2
-console.log('Задание 2');
-
-// С конца добавляем элементы в новый массив
-function reverseArray(arr) {
-	var newArr = [];
-	for (var i = arr.length - 1; i >= 0; i--) {
-		newArr.push(arr[i]);
-	}
-return newArr;
-}
-
-var arr = [10, 20, 30, 40, 50];
-var arr2 = reverseArray(arr);
-console.log(arr);
-console.log(arr2);
-
-// Работаем до середины и меняем элементы друг с другом.
-function reverseArrayInPlace(arr){
+	var desk = document.getElementById('desk');
 	
-	var arrMiddle = Math.ceil(arr.length / 2) - 1;
-	var idLastElem = arr.length - 1;
+	for (var i = 1; i <= 8; i++) {
+		for (var j = 1; j <= 8; j++) {
+			var cell = document.createElement('div');
+			if ((i + j) % 2 == 0) {
+				cell.className = 'cell whiteCell';
+			} else {
+				cell.className = 'cell blackCell';
+			}
+			desk.appendChild(cell);
+		}
+	}
 
-	for (var i = 0; i <= arrMiddle; i++) {
-		var tempElem = arr[i];
+	function generateNumbers(setClass, position) {
+		for (var i = 8; i >= 1; i--) {
+			var div = document.createElement('div');
+			div.innerHTML = i;
+			div.className = 'symbol ' + setClass;
+			var cellLeft = document.getElementsByClassName('cell')[position - 8 * i];
+			cellLeft.appendChild(div);
+		}
+	return
+	}
+
+	function generateLetters(setClass, position) {
+		var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+		for (var i = 1; i <= 8; i++) {
+			var div = document.createElement('div');
+			div.innerHTML = letters[i - 1];
+			div.className = 'symbol ' + setClass;
+			var cellLeft = document.getElementsByClassName('cell')[position + i];
+			cellLeft.appendChild(div);
+		}
+	return
+	}
+
+	generateNumbers('numbers-left', 64);
+	generateNumbers('numbers-right', 71);
+	generateLetters('letters-up', -1);
+	generateLetters('letters-down', 55);
+
+return
+}
+
+
+
+function generateFigures(figures, begin, end){
+	var arrFigures = ['rook','knight','bishop','queen','king','bishop','knight','rook','pawns','pawns','pawns','pawns','pawns','pawns','pawns','pawns'];
+
+	if (figures == 'whiteFigures') {
+		arrFigures[3] = 'king';
+		arrFigures[4] = 'queen';
+		arrFigures = arrFigures.reverse();
+	}
+	
+	for (var i = end; i >= begin; i--) {
+		var figurePlace = document.getElementsByClassName('cell')[i - 1];
+		var div = document.createElement('div');
 		
-		//Меняем элементы местами
-		arr[i] = arr[idLastElem - i];
-		arr[idLastElem - i] = tempElem;
+		div.className = figures + ' ' + arrFigures[i - begin];
+		figurePlace.appendChild(div);
 	}
-
-return arr;
+return
 }
 
-arr = reverseArrayInPlace(arr);
-console.log(arr);
 
-//Задание 3
-console.log('Задание 3');
-
-function pick(obj, keys) {
-	// пробегаемся по объекту
-	for(var key in obj) {
-		var indexOfKey = keys.indexOf(key);
-		if (indexOfKey != -1) delete obj[keys[indexOfKey]];
+function iconFigures() {
+	var pawns = document.getElementsByClassName('pawns');
+	var j = 0;
+	for (var i in pawns) {
+		console.log(pawns[i]);
+	
 	}
-return obj;
+	return console.log(j);
 }
 
-var user = {
-    name: 'Sergey',
-    age: 30,
-    email: 'sergey@gmail.com',
-    friends: ['Sveta', 'Artem']
-}
+/*
+Добавление свойствт
+function generateStyle(){
+	var style = document.createElement('style');
+	style.type = 'text/css';
+    style.innerHTML = '#desk { width: 300px; height: 300px; border: 1px solid grey;} .cell {width: 30px; height: 30px;}';
+    var head = document.getElementsByTagName("head");
+    head[0].appendChild(style);
+   // document.getElementsByTagName("head").appendChild(style);
+}*/
+/* generateStyle();*/
 
-var keys = ['name', 'friends', 'address'];
 
-console.log(objToStr(pick(user,keys)));
+generateDesk();
+generateFigures('whiteFigures', 49, 64);
+generateFigures('blackFigures', 1, 16);
+
+iconFigures();
+console.log(document.body);
