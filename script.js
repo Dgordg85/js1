@@ -75,31 +75,87 @@ return
 
 
 function iconFigures() {
-	var pawns = document.getElementsByClassName('pawns');
-	var j = 0;
-	for (var i in pawns) {
-		console.log(pawns[i]);
-	
+	var figuresArr = ['pawns', 'rook', 'king', 'bishop', 'queen', 'knight'];
+
+	for (var i = 0; i < 6; i++) {
+		var figure = document.getElementsByClassName(figuresArr[i]);
+		for(var j in figure) {
+			
+			if (typeof(figure[j]) === 'object') {
+				figure[j].style.width = '30px';
+				figure[j].style.height = '30px';
+		    	figure[j].style.background = 'url(https://raw.githubusercontent.com/Dgordg85/js1/master/chess.png) no-repeat';
+		    	
+	    		if ((figure[j].classList.contains('whiteFigures') || (figure[j].classList.contains('blackFigures')))) {
+		    		if (figure[j].classList.contains('rook')) figure[j].style.backgroundPositionX = '-97px';
+			    	if (figure[j].classList.contains('pawns')) figure[j].style.backgroundPositionX = '-248px';
+			    	if (figure[j].classList.contains('king')) figure[j].style.backgroundPositionX = '3px';
+			    	if (figure[j].classList.contains('queen')) figure[j].style.backgroundPositionX = '-47px';
+					if (figure[j].classList.contains('bishop')) figure[j].style.backgroundPositionX = '-147px';
+					if (figure[j].classList.contains('knight')) figure[j].style.backgroundPositionX = '-199px';
+		    	}
+
+		    	if (figure[j].classList.contains('blackFigures')){
+		    		figure[j].style.backgroundPositionY = '-4px';
+		    	}
+
+
+		    	if (figure[j].classList.contains('whiteFigures')){
+		    		figure[j].style.backgroundPositionY = '-47px';
+		    	}
+
+			}
+		}
 	}
-	return console.log(j);
+	// Удаляем буквы из стилей
+	var style = document.createElement('style');
+	style.type = 'text/css';
+    style.innerHTML = style.innerHTML + '.pawns:after, .rook:after, .king:after, .bishop:after, .queen:after, .knight:after { content: \'\';}';
+    var head = document.getElementsByTagName("head");
+    head[0].appendChild(style);
+
+	return
 }
 
-/*
-Добавление свойствт
 function generateStyle(){
 	var style = document.createElement('style');
 	style.type = 'text/css';
-    style.innerHTML = '#desk { width: 300px; height: 300px; border: 1px solid grey;} .cell {width: 30px; height: 30px;}';
+	style.innerHTML = 'div { text-align: center; vertical-align: center; line-height: 30px; font-family: \"Verdana\",Georgia,Serif; }';     
+    style.innerHTML = style.innerHTML + '#desk { width: 240px; height: 240px; border: 15px solid #762e06; border-radius: 7px; }';
+    style.innerHTML = style.innerHTML + '.cell { width: 30px; height: 30px; float: left; position: relative; }';
+    style.innerHTML = style.innerHTML + '.blackCell { background-color: #c35519; }';
+    style.innerHTML = style.innerHTML + '.whiteCell { background-color: #fceccb; }';
+    style.innerHTML = style.innerHTML + '.blackFigures { color: black; font-weight: bold; }';
+    style.innerHTML = style.innerHTML + '.whiteFigures { color: #cbafce; font-weight: bold; }';
+    style.innerHTML = style.innerHTML + '.symbol { position: absolute; line-height: 0px; color: white; font-size: 9px; font-family: \"Verdana\",Georgia,Serif; font-weight: normal; }';
+    style.innerHTML = style.innerHTML + '.numbers-left { top: 15px; left: -10px; }';
+    style.innerHTML = style.innerHTML + '.numbers-right { top: 15px; right: -10px; transform: rotate(180deg); }';
+    style.innerHTML = style.innerHTML + '.letters-up { left: 12px; top: -7px; transform: rotate(180deg); font-size: 8px; }';
+    style.innerHTML = style.innerHTML + '.letters-down { left: 12px; bottom: -7px; font-size: 8px; }';
+    style.innerHTML = style.innerHTML + '.pawns:after { content: \'П\'; } ';
+    style.innerHTML = style.innerHTML + '.rook:after { content: \'Л\'; } ';
+    style.innerHTML = style.innerHTML + '.king:after, .knight:after { content: \'К\'; }';
+    style.innerHTML = style.innerHTML + '.bishop:after { content: \'C\'; }';
+    style.innerHTML = style.innerHTML + '.queen:after { content: \'Ф\'; }';
+
     var head = document.getElementsByTagName("head");
     head[0].appendChild(style);
-   // document.getElementsByTagName("head").appendChild(style);
-}*/
-/* generateStyle();*/
+}
+
+function generateButton(){
+	var button = document.createElement('input');
+	button.setAttribute('type', "button");
+	button.setAttribute('value', "Заменить буквы картинками");
+	button.style.marginTop = '30px';
+	button.style.marginLeft = '35px';
+	button.setAttribute('onclick', "iconFigures()");
+	document.body.appendChild(button);
+}
 
 
 generateDesk();
 generateFigures('whiteFigures', 49, 64);
 generateFigures('blackFigures', 1, 16);
+generateStyle();
+generateButton();
 
-iconFigures();
-console.log(document.body);
