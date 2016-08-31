@@ -114,6 +114,10 @@ function iconFigures() {
     var head = document.getElementsByTagName("head");
     head[0].appendChild(style);
 
+    var button = document.getElementById('button');
+    button.setAttribute('value', "Заменено!");
+    button.style.marginLeft = '95px';
+    button.setAttribute('disabled', '');
 	return
 }
 
@@ -146,6 +150,7 @@ function generateButton(){
 	var button = document.createElement('input');
 	button.setAttribute('type', "button");
 	button.setAttribute('value', "Заменить буквы картинками");
+	button.setAttribute('id', "button");
 	button.style.marginTop = '30px';
 	button.style.marginLeft = '35px';
 	button.setAttribute('onclick', "iconFigures()");
