@@ -1,4 +1,4 @@
-"use strict;"
+"use strict";
 
 function generateDesk(){
 
@@ -157,10 +157,82 @@ function generateButton(){
 	document.body.appendChild(button);
 }
 
+function gerenateA1B2div() {
+	var div = document.createElement('div');
+	div.style.position = 'absolute';
+	div.style.color = 'red';
+	div.style.fontSize = '25px';
+	div.style.left = '284px';
+	div.style.zIndex = '5';
+	div.style.top = '112px';
+	div.setAttribute('id', "A1B2");
+
+	var parentElem = document.body;
+	parentElem.insertBefore(div, parentElem.children[0]);
+}
+
+function getA1B2() {
+	var cells = document.getElementsByClassName('cell');
+	var i = 1;
+
+	for (var cell in cells) {
+		if (cells[cell].getAttribute('id') == 'pink') break;
+		i++;
+	}
+
+	var number = 9 - Math.ceil(i / 8);
+	var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+	var letter = letters[(i % 8 - 1)];
+	
+	if (!(letter)) {
+		letter = letters[7]
+	}
+return document.getElementById('A1B2').innerHTML = letter + number;
+}
 
 generateDesk();
 generateFigures('whiteFigures', 49, 64);
 generateFigures('blackFigures', 1, 16);
 generateStyle();
 generateButton();
+gerenateA1B2div();
 
+
+// Меняем цвет ячейки - обработчик события
+var desk = document.getElementById('desk');
+
+desk.addEventListener('click', function(event){	
+	var clickCell = event.target;
+
+	if (clickCell.getAttribute('id') == 'desk') {
+		return;
+	}
+
+	while (!(clickCell.classList.contains('cell'))){
+		clickCell = clickCell.parentNode;
+	}
+
+	var previousColor = clickCell.getAttribute('backgroundColor');
+
+	switch(clickCell.getAttribute('id')) {
+		case 'pink':
+			clickCell.style.backgroundColor = previousColor;
+			clickCell.removeAttribute('id');
+			document.getElementById('A1B2').innerHTML = '';
+			break;
+		default:
+			var previousPinkCell = document.getElementById('pink');
+
+			if (previousPinkCell) {
+				previousPinkCell.style.backgroundColor = previousColor;	
+				previousPinkCell.removeAttribute('id');
+				document.getElementById('A1B2').innerHTML = '';	
+			}
+			
+			clickCell.style.backgroundColor = '#ffc0cb';
+			clickCell.setAttribute('id','pink');	
+	}
+
+	// Проверяем если розовый цвет и выводим координаты в специальную область
+	if (document.getElementById('pink')) getA1B2();
+});
