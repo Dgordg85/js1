@@ -1,5 +1,96 @@
 "use strict";
 
+generateDesk();
+generateFigures('whiteFigures', 49, 64);
+generateFigures('blackFigures', 1, 16);
+generateStyle();
+generateButton();
+gerenateA1B2div();
+
+var desk = document.getElementById('desk');
+
+desk.addEventListener('click', function(event){	
+	var clickCell = event.target;
+
+	makeCellPink(clickCell);
+	// Проверяем если розовый цвет и выводим координаты в специальную область
+	if (document.getElementById('pink')) transferCellCode();
+});
+
+document.addEventListener('keydown',function(event){
+	if (document.getElementById('pink')){
+		var cellForChange = changePinkCellPlace(event.key);
+		makeCellPink(cellForChange);
+	}
+	else {
+		makeCellPink(document.getElementsByClassName('cell')[27]);
+	}
+	transferCellCode();
+});
+
+function changePinkCellPlace(arrow){
+	var isChangePinkCell = false;
+	var numberPinkCell = findPinkCellNumber();
+	switch (arrow) {
+		case 'ArrowLeft':
+			if (numberPinkCell % 8 === 0 || numberPinkCell === 0) {
+				numberPinkCell += 7;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				var cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementById('pink').previousElementSibling;
+			}
+			break;
+		case 'ArrowRight':
+			if ((numberPinkCell + 1) % 8 === 0) {
+				numberPinkCell -= 7;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementById('pink').nextElementSibling;
+			}
+			break;
+		case 'ArrowUp':
+			if (numberPinkCell < 8) {
+				numberPinkCell += 56;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+				for (var i = 0; i < 8; i++) {
+					cellForChange = cellForChange.previousElementSibling;;
+				}
+			}
+			break;
+
+		case 'ArrowDown':
+			if (numberPinkCell > 55) {
+				numberPinkCell -= 56;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+				for (var i = 0; i < 8; i++) {
+					cellForChange = cellForChange.nextElementSibling;;
+				}
+			}
+			break;
+	}
+return cellForChange;
+}
+
 function generateDesk(){
 
 	var divDesk = document.createElement('div');
@@ -52,8 +143,6 @@ function generateDesk(){
 return
 }
 
-
-
 function generateFigures(figures, begin, end){
 	var arrFigures = ['rook','knight','bishop','queen','king','bishop','knight','rook','pawns','pawns','pawns','pawns','pawns','pawns','pawns','pawns'];
 
@@ -72,7 +161,6 @@ function generateFigures(figures, begin, end){
 	}
 return
 }
-
 
 function iconFigures() {
 	var figuresArr = ['pawns', 'rook', 'king', 'bishop', 'queen', 'knight'];
@@ -159,6 +247,7 @@ function generateButton(){
 
 function gerenateA1B2div() {
 	var div = document.createElement('div');
+
 	div.style.position = 'absolute';
 	div.style.color = 'red';
 	div.style.fontSize = '25px';
@@ -167,22 +256,16 @@ function gerenateA1B2div() {
 	div.style.top = '112px';
 	div.setAttribute('id', "A1B2");
 
-	var parentElem = document.body;
-	parentElem.insertBefore(div, parentElem.children[0]);
+	document.body.insertBefore(div, document.body.children[0]);
 }
 
-function getA1B2() {
-	var cells = document.getElementsByClassName('cell');
-	var i = 1;
+function transferCellCode() {
+	
+	var pinkCellNumber = findPinkCellNumber();
 
-	for (var cell in cells) {
-		if (cells[cell].getAttribute('id') == 'pink') break;
-		i++;
-	}
-
-	var number = 9 - Math.ceil(i / 8);
+	var number = 9 - Math.ceil((pinkCellNumber + 1) / 8);
 	var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-	var letter = letters[(i % 8 - 1)];
+	var letter = letters[(pinkCellNumber % 8)];
 	
 	if (!(letter)) {
 		letter = letters[7]
@@ -190,34 +273,33 @@ function getA1B2() {
 return document.getElementById('A1B2').innerHTML = letter + number;
 }
 
-generateDesk();
-generateFigures('whiteFigures', 49, 64);
-generateFigures('blackFigures', 1, 16);
-generateStyle();
-generateButton();
-gerenateA1B2div();
+function findPinkCellNumber(){
+	var cells = document.getElementsByClassName('cell');
+	var i = 0;
+
+	for (var cell in cells) {
+		if (cells[cell].getAttribute('id') == 'pink') break;
+		i++;
+	}
+	return i;
+}
 
 
-// Меняем цвет ячейки - обработчик события
-var desk = document.getElementById('desk');
-
-desk.addEventListener('click', function(event){	
-	var clickCell = event.target;
-
-	if (clickCell.getAttribute('id') == 'desk') {
+function makeCellPink(target) {
+	if (target.getAttribute('id') == 'desk') {
 		return;
 	}
 
-	while (!(clickCell.classList.contains('cell'))){
-		clickCell = clickCell.parentNode;
+	while (!(target.classList.contains('cell'))){
+		target = target.parentNode;
 	}
 
-	var previousColor = clickCell.getAttribute('backgroundColor');
+	var previousColor = target.getAttribute('backgroundColor');
 
-	switch(clickCell.getAttribute('id')) {
+	switch(target.getAttribute('id')) {
 		case 'pink':
-			clickCell.style.backgroundColor = previousColor;
-			clickCell.removeAttribute('id');
+			target.style.backgroundColor = previousColor;
+			target.removeAttribute('id');
 			document.getElementById('A1B2').innerHTML = '';
 			break;
 		default:
@@ -229,10 +311,8 @@ desk.addEventListener('click', function(event){
 				document.getElementById('A1B2').innerHTML = '';	
 			}
 			
-			clickCell.style.backgroundColor = '#ffc0cb';
-			clickCell.setAttribute('id','pink');	
+			target.style.backgroundColor = '#ffc0cb';
+			target.setAttribute('id','pink');
+			break;
 	}
-
-	// Проверяем если розовый цвет и выводим координаты в специальную область
-	if (document.getElementById('pink')) getA1B2();
-});
+}
