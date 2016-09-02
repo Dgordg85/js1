@@ -6,17 +6,29 @@ generateFigures('blackFigures', 1, 16);
 generateStyle();
 generateButton();
 gerenateA1B2div();
+generateDivsDelFigures('delBlack', 0);
+generateDivsDelFigures('delWhite', 3);
 
+var delFigures = [];
+var idDel = 0;
 var desk = document.getElementById('desk');
 
+
+// Мышь
 desk.addEventListener('click', function(event){	
 	var clickCell = event.target;
-
 	makeCellPink(clickCell);
 	// Проверяем если розовый цвет и выводим координаты в специальную область
 	if (document.getElementById('pink')) transferCellCode();
+
+	if (clickCell.classList.contains('blackFigures')){
+		moveFigureToDelDiv(clickCell, 'black')
+	} else if (clickCell.classList.contains('whiteFigures')) {
+		moveFigureToDelDiv(clickCell, 'white')
+	}
 });
 
+// Стрелки
 document.addEventListener('keydown',function(event){
 	if (document.getElementById('pink')){
 		var cellForChange = changePinkCellPlace(event.key);
@@ -28,68 +40,6 @@ document.addEventListener('keydown',function(event){
 	transferCellCode();
 });
 
-function changePinkCellPlace(arrow){
-	var isChangePinkCell = false;
-	var numberPinkCell = findPinkCellNumber();
-	switch (arrow) {
-		case 'ArrowLeft':
-			if (numberPinkCell % 8 === 0 || numberPinkCell === 0) {
-				numberPinkCell += 7;
-				isChangePinkCell = true;
-			}
-
-			if (isChangePinkCell) {
-				var cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
-			} else {
-				cellForChange = document.getElementById('pink').previousElementSibling;
-			}
-			break;
-		case 'ArrowRight':
-			if ((numberPinkCell + 1) % 8 === 0) {
-				numberPinkCell -= 7;
-				isChangePinkCell = true;
-			}
-
-			if (isChangePinkCell) {
-				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
-			} else {
-				cellForChange = document.getElementById('pink').nextElementSibling;
-			}
-			break;
-		case 'ArrowUp':
-			if (numberPinkCell < 8) {
-				numberPinkCell += 56;
-				isChangePinkCell = true;
-			}
-
-			if (isChangePinkCell) {
-				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
-			} else {
-				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
-				for (var i = 0; i < 8; i++) {
-					cellForChange = cellForChange.previousElementSibling;;
-				}
-			}
-			break;
-
-		case 'ArrowDown':
-			if (numberPinkCell > 55) {
-				numberPinkCell -= 56;
-				isChangePinkCell = true;
-			}
-
-			if (isChangePinkCell) {
-				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
-			} else {
-				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
-				for (var i = 0; i < 8; i++) {
-					cellForChange = cellForChange.nextElementSibling;;
-				}
-			}
-			break;
-	}
-return cellForChange;
-}
 
 function generateDesk(){
 
@@ -242,7 +192,7 @@ function generateButton(){
 	button.style.marginTop = '30px';
 	button.style.marginLeft = '35px';
 	button.setAttribute('onclick', "iconFigures()");
-	document.body.appendChild(button);
+	document.body.insertBefore(button, document.body.children[1]);
 }
 
 function gerenateA1B2div() {
@@ -253,10 +203,23 @@ function gerenateA1B2div() {
 	div.style.fontSize = '25px';
 	div.style.left = '284px';
 	div.style.zIndex = '5';
-	div.style.top = '112px';
+	div.style.top = '230px';
 	div.setAttribute('id', "A1B2");
 
 	document.body.insertBefore(div, document.body.children[0]);
+}
+
+function generateDivsDelFigures(id, place){
+	var div = document.createElement('div');
+
+	div.style.width = '250px';
+	div.style.border = '1px solid grey';
+	div.style.height = '91px';
+	div.setAttribute('id', id);
+	div.style.margin = '10px';
+
+	document.body.insertBefore(div, document.body.children[place]);
+
 }
 
 function transferCellCode() {
@@ -284,6 +247,68 @@ function findPinkCellNumber(){
 	return i;
 }
 
+function changePinkCellPlace(arrow){
+	var isChangePinkCell = false;
+	var numberPinkCell = findPinkCellNumber();
+	switch (arrow) {
+		case 'ArrowLeft':
+			if (numberPinkCell % 8 === 0 || numberPinkCell === 0) {
+				numberPinkCell += 7;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				var cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementById('pink').previousElementSibling;
+			}
+			break;
+		case 'ArrowRight':
+			if ((numberPinkCell + 1) % 8 === 0) {
+				numberPinkCell -= 7;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementById('pink').nextElementSibling;
+			}
+			break;
+		case 'ArrowUp':
+			if (numberPinkCell < 8) {
+				numberPinkCell += 56;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+				for (var i = 0; i < 8; i++) {
+					cellForChange = cellForChange.previousElementSibling;;
+				}
+			}
+			break;
+
+		case 'ArrowDown':
+			if (numberPinkCell > 55) {
+				numberPinkCell -= 56;
+				isChangePinkCell = true;
+			}
+
+			if (isChangePinkCell) {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+			} else {
+				cellForChange = document.getElementsByClassName('cell')[numberPinkCell];
+				for (var i = 0; i < 8; i++) {
+					cellForChange = cellForChange.nextElementSibling;;
+				}
+			}
+			break;
+	}
+return cellForChange;
+}
 
 function makeCellPink(target) {
 	if (target.getAttribute('id') == 'desk') {
@@ -315,4 +340,34 @@ function makeCellPink(target) {
 			target.setAttribute('id','pink');
 			break;
 	}
+}
+
+
+function moveFigureToDelDiv(clickCell, color) {
+	var id = 'del' + idDel;
+	idDel++;
+
+	delFigures[id] = clickCell;
+	clickCell.parentNode.classList.add(id);
+	clickCell.setAttribute('id', id);
+	clickCell.setAttribute('onclick', "backFigure('" + id + "');");
+	clickCell.style.float = 'left';
+	clickCell.style.marginRight = '5px';
+	if (color == 'white') {
+		var delDiv = document.getElementById('delWhite');
+	} else {
+		var delDiv = document.getElementById('delBlack');
+	}
+	delDiv.appendChild(clickCell);
+return
+}
+
+function backFigure(id){
+	var divCode = delFigures[id];
+	var lastPlace = document.getElementsByClassName(id)[0];
+	var delFigure = document.getElementById(id);
+	delFigure.style.float = 'none';
+	delFigure.style.marginRight = '0px';
+	lastPlace.appendChild(delFigure);
+return
 }
